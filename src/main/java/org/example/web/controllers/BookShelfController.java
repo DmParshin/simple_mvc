@@ -31,19 +31,33 @@ public class BookShelfController {
         return "book_shelf";
     }
 
+    @PostMapping("/filtered")
+    public String filteredBooks(Model model, Book book) {
+        logger.info("got filtered book shelf");
+        model.addAttribute("book", new Book());
+        model.addAttribute("bookList", bookService.getFilteredBooks(book));
+
+        return "book_shelf";
+    }
+
     @PostMapping("/save")
     public String saveBook(Book book) {
-        bookService.saveBook(book);
-        logger.info("current repository size: " + bookService.getAllBooks().size());
+        if(!book.getAuthor().isEmpty() || !book.getTitle().isEmpty() || book.getSize() != null){
+            bookService.saveBook(book);
+            logger.info("current repository size: " + bookService.getAllBooks().size());
+        }
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/remove")
     public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
-        if (bookService.removeBookById(bookIdToRemove)) {
-            return "redirect:/books/shelf";
-        } else {
-            return "book_shelf";
-        }
+        bookService.removeBookById(bookIdToRemove);
+        return "redirect:/books/shelf";
+    }
+
+    @PostMapping("/removebyregex")
+    public String removeBookByRegex(Book book) {
+        bookService.removeBookByRegex(book);
+        return "redirect:/books/shelf";
     }
 }

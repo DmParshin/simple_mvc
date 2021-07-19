@@ -30,8 +30,8 @@ public class LoginController {
     }
 
     @PostMapping("/auth")
-    public String authenticate(LoginForm loginFrom) {
-        if (loginService.authenticate(loginFrom)) {
+    public String authenticate(LoginForm loginForm) {
+        if (loginService.authenticate(loginForm)) {
             logger.info("login OK redirect to book shelf");
             return "redirect:/books/shelf";
         } else {
@@ -39,4 +39,21 @@ public class LoginController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/reg")
+    public String reg(LoginForm loginForm) {
+        return "registration_page";
+    }
+
+    @PostMapping("/adduser")
+    public String addUser(LoginForm loginForm) {
+        if (loginService.registration(loginForm)) {
+            logger.info("new user registered");
+            return "redirect:/login";
+        } else {
+            logger.info("new user FAIL registered");
+            return "redirect:/login/reg";
+        }
+    }
+
 }

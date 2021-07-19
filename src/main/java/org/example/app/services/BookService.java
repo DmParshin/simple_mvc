@@ -16,15 +16,15 @@ public class BookService {
         this.bookRepo = bookRepo;
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepo.retreiveAll();
-    }
+    public List<Book> getAllBooks() { return bookRepo.getAll(); }
 
-    public void saveBook(Book book) {
-        bookRepo.store(book);
-    }
+    public List<Book> getFilteredBooks(Book book){ return bookRepo.getFilteredBooks(book);}
+
+    public void saveBook(Book book) { bookRepo.store(book); }
 
     public boolean removeBookById(Integer bookIdToRemove) {
         return bookRepo.removeItemById(bookIdToRemove);
     }
+
+    public boolean removeBookByRegex(Book book) { return bookRepo.removeItemByRegex(book);}
 }

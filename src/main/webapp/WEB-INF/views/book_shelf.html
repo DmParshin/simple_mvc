@@ -27,10 +27,29 @@
         th, td {
             border-bottom: 1px solid #ddd;
         }
+
+        .button {
+            width:165px;
+        }
+
     </style>
 </head>
 <body>
 <div id="root_container">
+
+    <form method="post" th:action="@{/books/remove}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="id number" th:name="bookIdToRemove">
+                </td>
+                <td>
+                    <input class="button" type="submit" value="remove">
+                </td>
+            </tr>
+        </table>
+    </form>
+
     <form method="post" th:action="@{/books/save}" th:object="${book}">
         <table>
             <tr>
@@ -44,20 +63,58 @@
                     <input type="text" placeholder="size (pages)" th:field="*{size}">
                 </td>
                 <td>
-                    <input type="submit" value="save">
+                    <input class="button" type="submit" value="save">
                 </td>
             </tr>
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/remove}">
+    <form method="post" th:action="@{/books/removebyregex}" th:object="${book}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="id number" th:name="bookIdToRemove">
+                    <input type="text" placeholder="author" th:field="*{author}">
                 </td>
                 <td>
-                    <input type="submit" value="remove">
+                    <input type="text" placeholder="book_title" th:field="*{title}">
+                </td>
+                <td>
+                    <input type="text" placeholder="size (pages)" th:field="*{size}">
+                </td>
+                <td>
+                    <input class="button" type="submit" value="remove by RegEx">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="post" th:action="@{/books/filtered}" th:object="${book}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="author" th:field="*{author}">
+                </td>
+                <td>
+                    <input type="text" placeholder="book_title" th:field="*{title}">
+                </td>
+                <td>
+                    <input type="text" placeholder="size (pages)" th:field="*{size}">
+                </td>
+                <td>
+                    <input class="button" type="submit" value="filter by RegEx">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="get" th:action="@{/books/shelf}" th:object="${book}">
+        <table>
+            <tr>
+                <td width="165px"></td>
+                <td width="165px"></td>
+                <td width="165px"></td>
+                <td>
+                    <input class="button" type="submit" value="no filter">
                 </td>
             </tr>
         </table>

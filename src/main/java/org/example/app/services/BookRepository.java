@@ -14,8 +14,32 @@ public class BookRepository implements ProjectRepository<Book> {
     private final List<Book> repo = new ArrayList<>();
 
     @Override
-    public List<Book> retreiveAll() {
+    public List<Book> getAll() {
         return new ArrayList<>(repo);
+    }
+
+    @Override
+    public List<Book> getFilteredBooks(Book book) {
+        List<Book> allBooks = new ArrayList<>(repo);
+        List<Book> result = new ArrayList<>();
+        for (Book bookItem : allBooks){
+            if(!book.getAuthor().equals("") && bookItem.getAuthor().matches(book.getAuthor())){
+                logger.info("filtered book by author completed: " + book);
+                result.add(bookItem);
+                continue;
+            }
+            if(!book.getTitle().equals("") && bookItem.getTitle().matches(book.getTitle())){
+                logger.info("filtered book by title completed: " + book);
+                result.add(bookItem);
+                continue;
+            }
+            if(book.getSize() != null && bookItem.getSize().toString().matches(book.getSize().toString())){
+                logger.info("filtered book by size completed: " + book);
+                result.add(bookItem);
+                continue;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -27,12 +51,34 @@ public class BookRepository implements ProjectRepository<Book> {
 
     @Override
     public boolean removeItemById(Integer bookIdToRemove) {
-        for (Book book : retreiveAll()) {
+        for (Book book : getAll()) {
             if (book.getId().equals(bookIdToRemove)) {
                 logger.info("remove book completed: " + book);
                 return repo.remove(book);
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean removeItemByRegex(Book book) {
+        for(Book bookItem : getAll()){
+            if(!book.getAuthor().equals("") && bookItem.getAuthor().matches(book.getAuthor())){
+                logger.info("remove book by author completed: " + book);
+                repo.remove(bookItem);
+                continue;
+            }
+            if(!book.getTitle().equals("") && bookItem.getTitle().matches(book.getTitle())){
+                logger.info("remove book by title completed: " + book);
+                repo.remove(bookItem);
+                continue;
+            }
+            if(book.getSize() != null && bookItem.getSize().toString().matches(book.getSize().toString())){
+                logger.info("remove book by size completed: " + book);
+                repo.remove(bookItem);
+                continue;
+            }
+        }
+        return true;
     }
 }
